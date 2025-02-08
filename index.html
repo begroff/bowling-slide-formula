@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bowling Slide Formula</title>
+</head>
+<body>
+    <form id="bowling-slide">
+        <div>
+            <label for="arrow">Arrow</label>
+            <input type="text" name="arrow" title="arrow" />
+        </div>
+        <div>
+            <label for="breakpoint">Breakpoint</label>
+            <input type="text" name="breakpoint" id="breakpoint" />
+        </div>
+        <div>
+            <label for="laydown-offset">Laydown Offset</label>
+            <input type="number" name="laydown-offset" id="laydown-offset" type="number" value="6" />
+        </div>
+        <button type="submit">Calculate</button>
+
+        <div>
+            <span>Laydown:</span> <span data-name="laydown"></span>
+            <span>Slide Board:</span> <span data-name="slide"></span>
+        </div>
+    </form>
+    <script>
+        let form = document.querySelector("#bowling-slide");
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+
+            const data = new FormData(form);
+            calculate(data);
+        });
+
+        function calculate(formData) {
+            let laydown = 0;
+            let slide = 0;
+
+            let arrow = formData.get("arrow");
+            let breakpoint = formData.get("breakpoint");
+            let laydownOffset = formData.get("laydown-offset");
+
+            const arrowNumber = parseInt(arrow);
+            const breakpointNumber = parseInt(breakpoint);
+            const laydownOffsetNumber = parseInt(laydownOffset);
+
+            // Initial
+            let calcNumber = 0;
+            if (Number.isInteger(arrowNumber)
+                && Number.isInteger(breakpointNumber)
+                && Number.isInteger(laydownOffsetNumber)) {
+                    calcNumber = arrowNumber - breakpointNumber;
+                    calcNumber = calcNumber / 2;
+
+                    laydown = calcNumber + arrowNumber;
+                    slide = laydown + laydownOffsetNumber;
+            }
+
+            const laydownResult = document.querySelector("[data-name='laydown']");
+            if (laydownResult) {
+                laydownResult.textContent = laydown;
+            }
+
+            const slideResult = document.querySelector("[data-name='slide']");
+            if (slideResult) {
+                slideResult.textContent = slide;
+            }
+        }
+    </script>
+</body>
+</html>
